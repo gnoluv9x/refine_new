@@ -1,4 +1,4 @@
-import { GitHubBanner, Refine, WelcomePage } from "@refinedev/core";
+import { Refine, WelcomePage } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import { notificationProvider } from "@refinedev/antd";
@@ -11,11 +11,11 @@ import routerBindings, {
 import dataProvider from "@refinedev/simple-rest";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ColorModeContextProvider } from "./contexts/color-mode";
+import { AntdInferencer } from "@refinedev/inferencer/antd"
 
 function App() {
   return (
     <BrowserRouter>
-      <GitHubBanner />
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <Refine
@@ -27,9 +27,24 @@ function App() {
               warnWhenUnsavedChanges: true,
               projectId: "njwYwY-fgNg7r-qTUshn",
             }}
+            resources={[
+              {
+                name: "blog_posts",
+                list: "/blog-posts",
+                show: "/blog-posts/show/:id",
+                create: "/blog-posts/create",
+                edit: "/blog-posts/edit/:id",
+              },
+            ]}
           >
             <Routes>
               <Route index element={<WelcomePage />} />
+              <Route path="blog-posts">
+                <Route index element={<AntdInferencer />} />
+                <Route path="create" element={<AntdInferencer />} />
+                <Route path="show/:id" element={<AntdInferencer />} />
+                <Route path="edit/:id" element={<AntdInferencer />} />
+              </Route>
             </Routes>
             <RefineKbar />
             <UnsavedChangesNotifier />
